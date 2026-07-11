@@ -20,13 +20,13 @@
 ## Installation
 
 ```bash
-pip install $PACKAGE_NAME
+pip install ComfyUI_Dazzle_VAE_DeGrid
 ```
 
 ### From Source
 ```bash
-git clone https://github.com/$GITHUB_ORG/$PROJECT_NAME.git
-cd $PROJECT_NAME
+git clone https://github.com/DazzleNodes/ComfyUI-Dazzle-VAE-DeGrid.git
+cd ComfyUI-Dazzle-VAE-DeGrid
 pip install -e .
 ```
 
