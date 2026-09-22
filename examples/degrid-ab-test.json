@@ -1,0 +1,307 @@
+{
+  "id": "degrid-ab-test",
+  "revision": 0,
+  "last_node_id": 17,
+  "last_link_id": 23,
+  "nodes": [
+    {
+      "id": 1,
+      "type": "LoadImage",
+      "pos": [-420, 360],
+      "size": [320, 314],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {"name": "IMAGE", "type": "IMAGE", "links": [1, 2, 3, 4, 5, 18]},
+        {"name": "MASK", "type": "MASK", "links": null}
+      ],
+      "title": "Test image (straight from VAE Decode, no resize!)",
+      "properties": {"Node name for S&R": "LoadImage"},
+      "widgets_values": ["portrait_model_denim.png", "image"]
+    },
+    {
+      "id": 2,
+      "type": "DazzleGridDiagnostic",
+      "pos": [40, -60],
+      "size": [315, 106],
+      "flags": {},
+      "order": 1,
+      "mode": 0,
+      "inputs": [{"name": "image", "type": "IMAGE", "link": 1}],
+      "outputs": [
+        {"name": "image", "type": "IMAGE", "links": null},
+        {"name": "heatmap", "type": "IMAGE", "links": [10]},
+        {"name": "metrics_json", "type": "STRING", "links": [11]}
+      ],
+      "title": "Diagnostic: RAW",
+      "properties": {"Node name for S&R": "DazzleGridDiagnostic"},
+      "widgets_values": ["raw"]
+    },
+    {
+      "id": 6,
+      "type": "PreviewImage",
+      "pos": [440, -160],
+      "size": [240, 270],
+      "flags": {},
+      "order": 5,
+      "mode": 0,
+      "inputs": [{"name": "images", "type": "IMAGE", "link": 10}],
+      "outputs": [],
+      "title": "RAW grid heatmap",
+      "properties": {"Node name for S&R": "PreviewImage"},
+      "widgets_values": []
+    },
+    {
+      "id": 7,
+      "type": "PreviewAny",
+      "pos": [720, -160],
+      "size": [380, 270],
+      "flags": {},
+      "order": 6,
+      "mode": 0,
+      "inputs": [{"name": "source", "type": "*", "link": 11}],
+      "outputs": [],
+      "title": "RAW metrics (ratios >3 = grid)",
+      "properties": {"Node name for S&R": "PreviewAny"},
+      "widgets_values": []
+    },
+    {
+      "id": 3,
+      "type": "DazzleVAEDeGridImage",
+      "pos": [40, 160],
+      "size": [315, 150],
+      "flags": {},
+      "order": 2,
+      "mode": 0,
+      "inputs": [{"name": "image", "type": "IMAGE", "link": 2}],
+      "outputs": [{"name": "image", "type": "IMAGE", "links": [12, 13, 19, 20]}],
+      "title": "DeGrid: COHERENT (ours)",
+      "properties": {"Node name for S&R": "DazzleVAEDeGridImage"},
+      "widgets_values": ["coherent", 1.0, 48.0, "2px", 0.3]
+    },
+    {
+      "id": 8,
+      "type": "SaveImage",
+      "pos": [440, 160],
+      "size": [260, 90],
+      "flags": {},
+      "order": 7,
+      "mode": 0,
+      "inputs": [{"name": "images", "type": "IMAGE", "link": 12}],
+      "outputs": [],
+      "properties": {"Node name for S&R": "SaveImage"},
+      "widgets_values": ["degrid/coherent"]
+    },
+    {
+      "id": 9,
+      "type": "DazzleGridDiagnostic",
+      "pos": [440, 300],
+      "size": [315, 106],
+      "flags": {},
+      "order": 8,
+      "mode": 0,
+      "inputs": [{"name": "image", "type": "IMAGE", "link": 13}],
+      "outputs": [
+        {"name": "image", "type": "IMAGE", "links": null},
+        {"name": "heatmap", "type": "IMAGE", "links": [16]},
+        {"name": "metrics_json", "type": "STRING", "links": [17]}
+      ],
+      "title": "Diagnostic: AFTER coherent",
+      "properties": {"Node name for S&R": "DazzleGridDiagnostic"},
+      "widgets_values": ["coherent"]
+    },
+    {
+      "id": 13,
+      "type": "PreviewImage",
+      "pos": [820, 300],
+      "size": [240, 270],
+      "flags": {},
+      "order": 11,
+      "mode": 0,
+      "inputs": [{"name": "images", "type": "IMAGE", "link": 16}],
+      "outputs": [],
+      "title": "AFTER heatmap (should be dark)",
+      "properties": {"Node name for S&R": "PreviewImage"},
+      "widgets_values": []
+    },
+    {
+      "id": 14,
+      "type": "PreviewAny",
+      "pos": [1100, 300],
+      "size": [380, 270],
+      "flags": {},
+      "order": 12,
+      "mode": 0,
+      "inputs": [{"name": "source", "type": "*", "link": 17}],
+      "outputs": [],
+      "title": "AFTER metrics (ratios should be <3)",
+      "properties": {"Node name for S&R": "PreviewAny"},
+      "widgets_values": []
+    },
+    {
+      "id": 4,
+      "type": "DazzleVAEDeGridImage",
+      "pos": [40, 380],
+      "size": [315, 150],
+      "flags": {},
+      "order": 3,
+      "mode": 0,
+      "inputs": [{"name": "image", "type": "IMAGE", "link": 3}],
+      "outputs": [{"name": "image", "type": "IMAGE", "links": [14, 21, 23]}],
+      "title": "DeGrid: NOTCH (community ref)",
+      "properties": {"Node name for S&R": "DazzleVAEDeGridImage"},
+      "widgets_values": ["notch", 1.0, 48.0, "2px", 0.3]
+    },
+    {
+      "id": 10,
+      "type": "SaveImage",
+      "pos": [440, 460],
+      "size": [260, 90],
+      "flags": {},
+      "order": 9,
+      "mode": 0,
+      "inputs": [{"name": "images", "type": "IMAGE", "link": 14}],
+      "outputs": [],
+      "properties": {"Node name for S&R": "SaveImage"},
+      "widgets_values": ["degrid/notch"]
+    },
+    {
+      "id": 5,
+      "type": "GLSLShader",
+      "pos": [40, 600],
+      "size": [315, 240],
+      "flags": {"collapsed": false},
+      "order": 4,
+      "mode": 0,
+      "inputs": [
+        {"name": "images.image0", "type": "IMAGE", "link": 4, "label": "image0"}
+      ],
+      "outputs": [
+        {"name": "IMAGE0", "type": "IMAGE", "links": [15, 22]},
+        {"name": "IMAGE1", "type": "IMAGE", "links": null},
+        {"name": "IMAGE2", "type": "IMAGE", "links": null},
+        {"name": "IMAGE3", "type": "IMAGE", "links": null}
+      ],
+      "title": "GLSL notch (Reddit original)",
+      "properties": {"Node name for S&R": "GLSLShader"},
+      "widgets_values": [
+        "#version 300 es\nprecision highp float;\nuniform sampler2D u_image0;\nuniform vec2 u_resolution;\nin vec2 v_texCoord;\nlayout(location = 0) out vec4 fragColor0;\n\n// Nyquist Notch — removes 2px grid artifacts. Place before deconvolution.\n// b = [-1, +6, -15, +20, -15, +6, -1] / 64  (binomial * (-1)^n, +1 at center)\nconst float B[7] = float[7](-1.0, 6.0, -15.0, 20.0, -15.0, 6.0, -1.0);\n\nvoid main() {\n    vec2 texel = 1.0 / u_resolution;\n    vec4 center = texture(u_image0, v_texCoord);\n\n    vec3 Bx = vec3(0.0), By = vec3(0.0), Bxy = vec3(0.0);\n    for (int i = -3; i <= 3; i++) {\n        float wi = B[i + 3] / 64.0;\n        Bx += wi * texture(u_image0, v_texCoord + vec2(float(i) * texel.x, 0.0)).rgb;\n        By += wi * texture(u_image0, v_texCoord + vec2(0.0, float(i) * texel.y)).rgb;\n        for (int j = -3; j <= 3; j++) {\n            float wj = B[j + 3] / 64.0;\n            Bxy += wi * wj * texture(u_image0,\n                v_texCoord + vec2(float(i) * texel.x, float(j) * texel.y)).rgb;\n        }\n    }\n\n    vec3 notched = center.rgb - Bx - By + Bxy;\n    fragColor0 = vec4(clamp(notched, 0.0, 1.0), 1.0);  // alpha forced to 1.0\n}",
+        "from_input"
+      ]
+    },
+    {
+      "id": 11,
+      "type": "SaveImage",
+      "pos": [440, 640],
+      "size": [260, 90],
+      "flags": {},
+      "order": 10,
+      "mode": 0,
+      "inputs": [{"name": "images", "type": "IMAGE", "link": 15}],
+      "outputs": [],
+      "properties": {"Node name for S&R": "SaveImage"},
+      "widgets_values": ["degrid/glsl"]
+    },
+    {
+      "id": 12,
+      "type": "SaveImage",
+      "pos": [40, 900],
+      "size": [260, 90],
+      "flags": {},
+      "order": 13,
+      "mode": 0,
+      "inputs": [{"name": "images", "type": "IMAGE", "link": 5}],
+      "outputs": [],
+      "title": "Save RAW copy (PNG baseline)",
+      "properties": {"Node name for S&R": "SaveImage"},
+      "widgets_values": ["degrid/raw"]
+    },
+    {
+      "id": 15,
+      "type": "Image Comparer (rgthree)",
+      "pos": [1120, 660],
+      "size": [520, 500],
+      "flags": {},
+      "order": 14,
+      "mode": 0,
+      "inputs": [
+        {"name": "image_a", "type": "IMAGE", "link": 18},
+        {"name": "image_b", "type": "IMAGE", "link": 19}
+      ],
+      "outputs": [],
+      "title": "Slide: RAW (a) vs COHERENT (b) -- grid kill",
+      "properties": {"comparer_mode": "Slide"},
+      "widgets_values": []
+    },
+    {
+      "id": 16,
+      "type": "Image Comparer (rgthree)",
+      "pos": [1680, 660],
+      "size": [520, 500],
+      "flags": {},
+      "order": 15,
+      "mode": 0,
+      "inputs": [
+        {"name": "image_a", "type": "IMAGE", "link": 20},
+        {"name": "image_b", "type": "IMAGE", "link": 21}
+      ],
+      "outputs": [],
+      "title": "Slide: COHERENT (a) vs NOTCH (b) -- detail check",
+      "properties": {"comparer_mode": "Slide"},
+      "widgets_values": []
+    },
+    {
+      "id": 17,
+      "type": "Image Comparer (rgthree)",
+      "pos": [2240, 660],
+      "size": [520, 500],
+      "flags": {},
+      "order": 16,
+      "mode": 0,
+      "inputs": [
+        {"name": "image_a", "type": "IMAGE", "link": 22},
+        {"name": "image_b", "type": "IMAGE", "link": 23}
+      ],
+      "outputs": [],
+      "title": "Slide: GLSL (a) vs NOTCH (b) -- reference match",
+      "properties": {"comparer_mode": "Slide"},
+      "widgets_values": []
+    }
+  ],
+  "links": [
+    [1, 1, 0, 2, 0, "IMAGE"],
+    [2, 1, 0, 3, 0, "IMAGE"],
+    [3, 1, 0, 4, 0, "IMAGE"],
+    [4, 1, 0, 5, 0, "IMAGE"],
+    [5, 1, 0, 12, 0, "IMAGE"],
+    [10, 2, 1, 6, 0, "IMAGE"],
+    [11, 2, 2, 7, 0, "STRING"],
+    [12, 3, 0, 8, 0, "IMAGE"],
+    [13, 3, 0, 9, 0, "IMAGE"],
+    [14, 4, 0, 10, 0, "IMAGE"],
+    [15, 5, 0, 11, 0, "IMAGE"],
+    [16, 9, 1, 13, 0, "IMAGE"],
+    [17, 9, 2, 14, 0, "STRING"],
+    [18, 1, 0, 15, 0, "IMAGE"],
+    [19, 3, 0, 15, 1, "IMAGE"],
+    [20, 3, 0, 16, 0, "IMAGE"],
+    [21, 4, 0, 16, 1, "IMAGE"],
+    [22, 5, 0, 17, 0, "IMAGE"],
+    [23, 4, 0, 17, 1, "IMAGE"]
+  ],
+  "groups": [
+    {
+      "id": 1,
+      "title": "Dazzle VAE DeGrid A/B test -- load a straight-from-decode render, Queue, compare output/degrid/* at 400% zoom",
+      "bounding": [-460, -240, 2720, 1460],
+      "color": "#3f789e",
+      "font_size": 24,
+      "flags": {}
+    }
+  ],
+  "config": {},
+  "extra": {},
+  "version": 0.4
+}

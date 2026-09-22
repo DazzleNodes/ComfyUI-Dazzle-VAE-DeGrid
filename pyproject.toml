@@ -5,14 +5,14 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "ComfyUI-Dazzle-VAE-DeGrid"
 dynamic = ["version"]
-description = "A new project created from git-repokit-template"
+description = "Removes the 2px VAE grid (hatching) from Qwen/Wan/Krea ComfyUI decodes via coherent global estimation -- diagnostic, image filter, and VAE wrapper nodes"
 readme = "README.md"
 license = {text = "GPL-3.0-or-later"}
 requires-python = ">=3.10"
 authors = [
     {name = "djdarcy", email = "djdarcy@users.noreply.github.com"},
 ]
-keywords = []
+keywords = ["comfyui", "comfyui-nodes", "qwen", "wan", "vae", "artifact-removal", "image-processing", "dazzlenodes"]
 classifiers = [
     "Development Status :: 2 - Pre-Alpha",
     "Environment :: Console",
@@ -40,8 +40,14 @@ Homepage = "https://github.com/DazzleNodes/ComfyUI-Dazzle-VAE-DeGrid"
 Repository = "https://github.com/DazzleNodes/ComfyUI-Dazzle-VAE-DeGrid"
 Issues = "https://github.com/DazzleNodes/ComfyUI-Dazzle-VAE-DeGrid/issues"
 
-[project.scripts]
-ComfyUI-Dazzle-VAE-DeGrid = "ComfyUI_Dazzle_VAE_DeGrid.cli:main"
+# ComfyUI custom node -- no CLI entry point
+
+# ComfyUI Registry Configuration
+# See: https://docs.comfy.org/registry/publishing
+[tool.comfy]
+PublisherId = "djdarcy"
+DisplayName = "Dazzle VAE DeGrid"
+Icon = ""
 
 [tool.setuptools.dynamic]
 version = {attr = "ComfyUI_Dazzle_VAE_DeGrid._version.PIP_VERSION"}
